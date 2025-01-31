@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
  "scripts": {
-  "start": "nodemon src/index.js",
-"postinstall": "apt-get install -y libc6 libc6-dev"},
+  "start": "nodemon src/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
