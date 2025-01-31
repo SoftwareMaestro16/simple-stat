@@ -49,16 +49,16 @@ export async function generateImage() {
         ctx.fillStyle = TEXT_COLOR;
 
         if (isPrice) {
-            ctx.font = 'bold 30px Arial';
+            ctx.font = 'bold 27px Arial';
             ctx.fillText(value, textX, y + BUTTON_HEIGHT / 3);
             if (extra) {
-                ctx.font = 'bold 26px Arial';
+                ctx.font = 'bold 24px Arial';
                 ctx.fillText(extra, textX, y + 2 * (BUTTON_HEIGHT / 3));
             }
         } else {
-            ctx.font = 'bold 28px Arial';
+            ctx.font = 'bold 27px Arial';
             ctx.fillText(title, textX, y + BUTTON_HEIGHT / 3);
-            ctx.font = 'bold 29px Arial';
+            ctx.font = 'bold 27px Arial';
             ctx.fillText(value, textX, y + 2 * (BUTTON_HEIGHT / 3));
         }
     }
