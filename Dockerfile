@@ -6,13 +6,11 @@ RUN apt-get update && apt-get install -y \
   libjpeg-dev \
   libpango1.0-dev \
   libgif-dev \
-  librsvg2-dev \
-  libpangocairo-1.0-0 \
-  librsvg2-common
+  librsvg2-dev
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm rebuild canvas --build-from-source
+RUN npm install && npm rebuild canvas --build-from-source
 
 COPY . .
 CMD ["npm", "start"]
