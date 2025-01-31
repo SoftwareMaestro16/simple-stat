@@ -5,8 +5,7 @@
   "type": "module",
  "scripts": {
   "start": "nodemon src/index.js",
-  "postinstall": "npm rebuild canvas --build-from-source"
-},
+"postinstall": "apt-get install -y libc6 libc6-dev"},
   "keywords": [],
   "author": "",
   "license": "ISC",
