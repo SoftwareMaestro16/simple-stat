@@ -43,7 +43,7 @@ export const IMAGE_HEIGHT = 70;
 export const IMAGE_MARGIN = 15;
 
 export const buttons = [
-    { value: '$' + scPrice, extra: scPercent + '%', image: scImage, isPrice: true },
+    { value: '$' + scPrice.toFixed(6), extra: scPercent + '%', image: scImage, isPrice: true },
     { value: '$' + tonPrice, extra: tonPercent + '%', image: tonImage, isPrice: true },
 
     { title: '$SC Burned', value: scBurned, image: burnImage },
