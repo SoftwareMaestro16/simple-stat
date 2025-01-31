@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/index.js",
-    "postinstall": "apt-get update && apt-get install -y build-essential libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev && npm rebuild canvas"
-  },
+  "start": "nodemon src/index.js",
+  "postinstall": "apt-get update && apt-get install -y build-essential libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev libpangocairo-1.0-0 librsvg2-common librsvg2-dev && npm rebuild canvas"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
