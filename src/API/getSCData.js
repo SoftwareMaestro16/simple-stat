@@ -59,7 +59,7 @@ export async function getBurnedPercentSimpleCoin() {
 
         const totalSupply = responseSupply.data.total_supply / 10**9;
         const burned = responseBurned.data.balance / 10**9;
-        const burnedPercentage = (burned / (burned + totalSupply)) * 100;
+        const burnedPercentage = (burned / totalSupply) * 100;
 
         return burnedPercentage.toFixed(2) + '%';
     } catch (error) {
