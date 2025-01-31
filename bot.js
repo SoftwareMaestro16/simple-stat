@@ -8,7 +8,7 @@ import { generateImage } from './src/generateImage/generate.js';
 dotenv.config();
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
-const CHANNEL_ID = '-1002389898813';
+const CHANNEL_ID = '-1002429972793';
 const OUTPUT_IMAGE_PATH = path.resolve('output', 'image.png');
 
 const keyboard = {
@@ -42,7 +42,7 @@ async function sendImageToChannel() {
     }
 }
 
-cron.schedule('0 14 * * *', async () => {
+cron.schedule('30 6 * * *', async () => {
     await sendImageToChannel();
 });
 
