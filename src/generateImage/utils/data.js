@@ -46,7 +46,7 @@ export const buttons = [
     { value: '$' + scPrice.toFixed(6), extra: scPercent + '%', image: scImage, isPrice: true },
     { value: '$' + tonPrice, extra: tonPercent + '%', image: tonImage, isPrice: true },
 
-    { title: '$SC Burned', value: scBurned, image: burnImage },
+    { title: '$SC Burned', value: scBurned.toFixed(2), image: burnImage },
     { title: 'TON Payout', value: totalAmount.toFixed(2), image: rewardImage },
 
     { title: 'Holders', value: holders, image: holderImage },
