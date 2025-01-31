@@ -42,7 +42,7 @@ async function sendImageToChannel() {
     }
 }
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 14 * * *', async () => {
     await sendImageToChannel();
 });
 
