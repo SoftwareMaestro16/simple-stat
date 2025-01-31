@@ -1,25 +1,26 @@
+# Используем официальный образ Node.js с поддержкой необходимых библиотек
 FROM node:20
 
-# Устанавливаем системные зависимости для canvas
+# Устанавливаем зависимости для сборки модуля canvas
 RUN apt-get update && apt-get install -y \
-  build-essential \
-  libcairo2-dev \
-  libjpeg-dev \
-  libpango1.0-dev \
-  libgif-dev \
-  librsvg2-dev \
-  && rm -rf /var/lib/apt/lists/*
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    librsvg2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Копируем package.json и package-lock.json и УДАЛЯЕМ node_modules
+# Копируем package.json и package-lock.json перед установкой зависимостей
 COPY package.json package-lock.json ./
-RUN rm -rf node_modules && npm install --omit=dev
 
-# ПЕРЕСБИРАЕМ canvas
-RUN npm rebuild canvas --build-from-source
+# Устанавливаем зависимости (включая native-библиотеки)
+RUN npm install --omit=dev --build-from-source
 
-# Копируем остальной код
+# Копируем весь проект в контейнер
 COPY . .
 
-CMD ["npm", "start"]
+# Запуск бота
+CMD ["node", "bot.js"]
