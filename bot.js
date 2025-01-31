@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { generateImage } from './generateImage.js'; 
+import { generateImage } from './src/generateImage/generate.js';
 
 dotenv.config();
 
@@ -31,7 +31,6 @@ async function sendImageToChannel() {
 
         if (fs.existsSync(imagePath)) {
             await bot.sendPhoto(CHANNEL_ID, fs.createReadStream(imagePath), {
-                caption: 'Обновленные данные',
                 ...keyboard
             });
             console.log('✅ Изображение отправлено в канал.');
