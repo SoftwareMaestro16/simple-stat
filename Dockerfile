@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install && npm rebuild canvas
+RUN npm rebuild canvas --build-from-source
 
 COPY . .
 CMD ["npm", "start"]
