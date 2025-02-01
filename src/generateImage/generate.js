@@ -1,8 +1,10 @@
-import { createCanvas } from 'canvas';
+import { createCanvas, registerFont } from 'canvas';
 import fs from 'fs';
 import path from 'path';
 import { drawRoundedRect, drawImageIfExists } from './utils/drawUtils.js';
 import { WIDTH, HEIGHT, BACKGROUND_COLOR, BUTTON_COLOR, TEXT_COLOR, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS, BUTTON_GAP, COLUMN_GAP, BUTTONS_PER_COLUMN, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_MARGIN, buttons } from './utils/data.js';
+
+registerFont(path.resolve('Fonts', 'AEROPORT.OTF'), { family: 'AEROPORT' });
 
 export async function generateImage() {
     const canvas = createCanvas(WIDTH, HEIGHT);
@@ -26,7 +28,7 @@ export async function generateImage() {
         y: startY + Math.floor(index / 2) * (BUTTON_HEIGHT + BUTTON_GAP),
     }));
 
-    ctx.font = 'bold 24px Arial';
+    ctx.font = 'bold 24px "AEROPORT"';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
 
@@ -44,21 +46,20 @@ export async function generateImage() {
 
         await drawImageIfExists(ctx, image, imageX, imageY, IMAGE_WIDTH, IMAGE_HEIGHT);
 
-        // Текст внутри кнопки
         const textX = imageX + IMAGE_WIDTH + IMAGE_MARGIN;
         ctx.fillStyle = TEXT_COLOR;
 
         if (isPrice) {
-            ctx.font = 'bold 26px Arial';
+            ctx.font = 'bold 26px "AEROPORT"';
             ctx.fillText(value, textX, y + BUTTON_HEIGHT / 3);
             if (extra) {
-                ctx.font = 'bold 23px Arial';
+                ctx.font = 'bold 23px "AEROPORT"';
                 ctx.fillText(extra, textX, y + 2 * (BUTTON_HEIGHT / 3));
             }
         } else {
-            ctx.font = 'bold 26px Arial';
+            ctx.font = 'bold 26px "AEROPORT"';
             ctx.fillText(title, textX, y + BUTTON_HEIGHT / 3);
-            ctx.font = 'bold 26px Arial';
+            ctx.font = 'bold 26px "AEROPORT"';
             ctx.fillText(value, textX, y + 2 * (BUTTON_HEIGHT / 3));
         }
     }

@@ -20,8 +20,27 @@ const keyboard = {
     }
 };
 
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, 'Привет!');
+bot.onText(/\/start/, async (msg) => {
+    const chatId = msg.chat.id;
+
+    try {
+        console.log(`📩 Генерация изображения для пользователя ${chatId}...`);
+        const imagePath = await generateImage();
+
+        if (fs.existsSync(imagePath)) {
+            await bot.sendPhoto(chatId, fs.createReadStream(imagePath), {
+                caption: '📊 Актуальная информация',
+                ...keyboard
+            });
+            console.log(`✅ Изображение отправлено пользователю ${chatId}`);
+        } else {
+            console.error('❌ Ошибка: Файл изображения не найден.');
+            bot.sendMessage(chatId, 'Ошибка при генерации изображения.');
+        }
+    } catch (error) {
+        console.error('❌ Ошибка при отправке изображения:', error);
+        bot.sendMessage(chatId, 'Ошибка при отправке изображения.');
+    }
 });
 
 async function sendImageToChannel() {
@@ -42,7 +61,7 @@ async function sendImageToChannel() {
     }
 }
 
-cron.schedule('40 8 * * *', async () => {
+cron.schedule('0 9 * * *', async () => {
     await sendImageToChannel();
 });
 
