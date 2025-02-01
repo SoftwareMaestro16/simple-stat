@@ -27,7 +27,7 @@ const dateImage = path.join(__dirname, '../images/date.png');
 export const WIDTH = 700;
 export const HEIGHT = 450;
 
-export const BACKGROUND_COLOR = ['#1C1C1C', '#000000']; // Градиент темно-серый → черный
+export const BACKGROUND_COLOR = ['#3E3E3E', '#000000']; // Градиент темно-серый → черный
 export const BUTTON_COLOR = ['#DEC707', '#FFA500']; // Градиент желтый → оранжевый
 export const TEXT_COLOR = '#FFFFFF';
 

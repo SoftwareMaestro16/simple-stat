@@ -3,8 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import { drawRoundedRect, drawImageIfExists } from './utils/drawUtils.js';
 import { WIDTH, HEIGHT, BACKGROUND_COLOR, BUTTON_COLOR, TEXT_COLOR, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS, BUTTON_GAP, COLUMN_GAP, BUTTONS_PER_COLUMN, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_MARGIN, buttons } from './utils/data.js';
+import { fileURLToPath } from 'url';
 
-registerFont(path.resolve('Fonts', 'AEROPORT.OTF'), { family: 'AEROPORT' });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+registerFont(path.resolve(__dirname, '../Fonts/AEROPORT.OTF'), { family: 'AEROPORT' });
 
 export async function generateImage() {
     const canvas = createCanvas(WIDTH, HEIGHT);
@@ -50,7 +54,7 @@ export async function generateImage() {
         ctx.fillStyle = TEXT_COLOR;
 
         if (isPrice) {
-            ctx.font = 'bold 26px "AEROPORT"';
+            ctx.font = 'bolder 26px "AEROPORT"';
             ctx.fillText(value, textX, y + BUTTON_HEIGHT / 3);
             if (extra) {
                 ctx.font = 'bold 23px "AEROPORT"';
