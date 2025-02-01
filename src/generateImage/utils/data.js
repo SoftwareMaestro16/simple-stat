@@ -6,7 +6,7 @@ import { getTonPrice, getTonPriceChange24h, getTonPayout } from '../../API/getTO
 import { getSimpleCoinPrice, fetchSimpleCoinHolders, getSimpleCoinPriceChange24h, getBurnedPercentSimpleCoin } from '../../API/getSCData.js';
 
 const tonPrice = await getTonPrice();
-const scPrice = await getSimpleCoinPrice();
+const { price: scPrice, fdv_usd: scFdvUsd } = await getSimpleCoinPrice();
 
 const tonPercent = await getTonPriceChange24h();
 const scPercent = await getSimpleCoinPriceChange24h();
@@ -43,12 +43,20 @@ export const IMAGE_HEIGHT = 70;
 export const IMAGE_MARGIN = 15;
 
 export const buttons = [
-    { value: '$' + scPrice.toFixed(6), extra: scPercent + '%', image: scImage, isPrice: true },
-    { value: '$' + tonPrice, extra: tonPercent + '%', image: tonImage, isPrice: true },
-
+    { 
+        value: '$' + scPrice.toFixed(6), 
+        extra: (scPercent >= 0 ? '+' : '') + scPercent + '%', 
+        image: scImage, 
+        isPrice: true 
+    },
+    { 
+        value: '$' + tonPrice, 
+        extra: (tonPercent >= 0 ? '+' : '') + tonPercent + '%', 
+        image: tonImage, 
+        isPrice: true 
+    },
     { title: '$SC Burned', value: scBurned, image: burnImage },
-    { title: 'TON Payout', value: totalAmount.toFixed(2), image: rewardImage },
-
+    { title: 'Market Cap', value: '$' + scFdvUsd.toFixed(2), image: rewardImage },
     { title: 'Holders', value: holders, image: holderImage },
     { title: 'Date', value: getCurrentDate(), image: dateImage },
 ];

@@ -3,7 +3,7 @@ import axios from "axios";
 export const SIMPLE_COIN_ADDRESS = 'EQB9QBqniFI0jOmw3PU6v1v4LU3Sivm9yPXDDB9Qf7cXTDft';
 
 /**
- * @returns {Promise<number|null>} 
+ * @returns {Promise<{ price: number|null, fdv_usd: number|null }>} 
  */
 export async function getSimpleCoinPrice() {
     const API_URL = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${SIMPLE_COIN_ADDRESS}`;
@@ -11,8 +11,12 @@ export async function getSimpleCoinPrice() {
     try {
         const response = await axios.get(API_URL);
         const price = response.data.data.attributes.price_usd;
+        const fdv = response.data.data.attributes.fdv_usd;
 
-        return price ? parseFloat(price) : null;
+        return {
+            price: price ? parseFloat(price) : null,     
+            fdv_usd: fdv ? parseFloat(fdv) : null,       
+        };
     } catch (error) {
         console.error("Error fetching jetton price:", error);
         throw new Error("Failed to fetch jetton price");
