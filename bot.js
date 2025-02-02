@@ -79,7 +79,7 @@ cron.schedule('30 6 * * *', async () => {
     await sendImageToChannel();
 });
 
-cron.schedule('30 18 * * *', async () => {
+cron.schedule('40 18 * * *', async () => {
     await sendImageToChannel();
 });
 
