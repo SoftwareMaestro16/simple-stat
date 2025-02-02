@@ -11,6 +11,15 @@ const __dirname = path.dirname(__filename);
 registerFont(path.resolve(__dirname, '../Fonts/AEROPORT.OTF'), { family: 'AEROPORT' });
 
 export async function generateImage() {
+    const timestamp = Date.now(); 
+    const outputDir = path.resolve('output');
+    
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    const outputPath = path.resolve(outputDir, `image_${timestamp}.png`);
+
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
 
@@ -68,7 +77,6 @@ export async function generateImage() {
         }
     }
 
-    const outputPath = path.resolve('output', 'image.png');
     const buffer = canvas.toBuffer('image/png');
     fs.writeFileSync(outputPath, buffer);
 

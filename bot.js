@@ -9,7 +9,6 @@ dotenv.config();
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 const CHANNEL_ID = '-1002429972793';
-const OUTPUT_IMAGE_PATH = path.resolve('output', 'image.png');
 
 const keyboard = {
     reply_markup: {
@@ -19,6 +18,17 @@ const keyboard = {
         ]
     }
 };
+
+function deleteImage(filePath) {
+    try {
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`🗑 Файл удалён: ${filePath}`);
+        }
+    } catch (error) {
+        console.error(`❌ Ошибка при удалении файла: ${error}`);
+    }
+}
 
 bot.onText(/\/start/, async (msg) => {
     const chatId = msg.chat.id;
@@ -37,6 +47,8 @@ bot.onText(/\/start/, async (msg) => {
             console.error('❌ Ошибка: Файл изображения не найден.');
             bot.sendMessage(chatId, 'Ошибка при генерации изображения.');
         }
+
+        deleteImage(imagePath); 
     } catch (error) {
         console.error('❌ Ошибка при отправке изображения:', error);
         bot.sendMessage(chatId, 'Ошибка при отправке изображения.');
@@ -56,6 +68,8 @@ async function sendImageToChannel() {
         } else {
             console.error('❌ Ошибка: Файл изображения не найден.');
         }
+
+        deleteImage(imagePath); 
     } catch (error) {
         console.error('❌ Ошибка при отправке изображения:', error);
     }
