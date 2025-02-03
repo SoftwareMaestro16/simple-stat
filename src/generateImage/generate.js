@@ -1,6 +1,7 @@
 import { createCanvas, registerFont } from 'canvas';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { drawRoundedRect, drawImageIfExists } from './utils/drawUtils.js';
 import { WIDTH, HEIGHT, BACKGROUND_COLOR, BUTTON_COLOR, TEXT_COLOR, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS, BUTTON_GAP, COLUMN_GAP, BUTTONS_PER_COLUMN, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_MARGIN, buttons } from './utils/data.js';
 import { fileURLToPath } from 'url';
@@ -11,21 +12,22 @@ const __dirname = path.dirname(__filename);
 registerFont(path.resolve(__dirname, '../Fonts/AEROPORT.OTF'), { family: 'AEROPORT' });
 
 export async function generateImage() {
-    const timestamp = Date.now(); 
+    const timestamp = Date.now();
     const outputDir = path.resolve('output');
-    
+
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
     }
 
     const outputPath = path.resolve(outputDir, `image_${timestamp}.png`);
+    const tempPath = path.resolve(outputDir, `temp_${timestamp}.png`); 
 
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
 
     const bgGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
-    bgGradient.addColorStop(0, BACKGROUND_COLOR[0]); 
-    bgGradient.addColorStop(1, BACKGROUND_COLOR[1]); 
+    bgGradient.addColorStop(0, BACKGROUND_COLOR[0]);
+    bgGradient.addColorStop(1, BACKGROUND_COLOR[1]);
 
     ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -47,8 +49,8 @@ export async function generateImage() {
 
     for (const { x, y, title, value, extra, image, isPrice } of buttonPositions) {
         const buttonGradient = ctx.createLinearGradient(x, y, x + BUTTON_WIDTH, y + BUTTON_HEIGHT);
-        buttonGradient.addColorStop(0, BUTTON_COLOR[0]); 
-        buttonGradient.addColorStop(1, BUTTON_COLOR[1]); 
+        buttonGradient.addColorStop(0, BUTTON_COLOR[0]);
+        buttonGradient.addColorStop(1, BUTTON_COLOR[1]);
 
         ctx.fillStyle = buttonGradient;
         drawRoundedRect(ctx, x, y, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS, buttonGradient);
@@ -78,7 +80,13 @@ export async function generateImage() {
     }
 
     const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(outputPath, buffer);
+    fs.writeFileSync(tempPath, buffer);
+
+    await sharp(tempPath)
+        .withMetadata({ exif: { IFD0: { Software: 'Anti-Telegram-Cache' } } })
+        .toFile(outputPath);
+
+    fs.unlinkSync(tempPath); 
 
     console.log(`✅ Изображение сохранено: ${outputPath}`);
     return outputPath;
