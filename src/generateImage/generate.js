@@ -22,7 +22,6 @@ export async function generateImage() {
     const canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
 
-    // Динамически получаем данные перед отрисовкой
     const buttons = await getDynamicData();
 
     const bgGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
