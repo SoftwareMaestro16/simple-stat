@@ -57,7 +57,7 @@ export async function getDynamicData() {
             isPrice: true 
         },
         { title: '$SC Burned', value: scBurned, image: burnImage },
-        { title: 'TON Payout', value: totalAmount, image: rewardImage },
+        { title: 'TON Payout', value: totalAmount.toFixed(2), image: rewardImage },
         { title: 'Holders', value: holders, image: holderImage },
         { title: 'Date', value: getCurrentDate(), image: dateImage },
     ];
