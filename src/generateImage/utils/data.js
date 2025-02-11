@@ -1,20 +1,9 @@
-import { getCurrentDate } from './drawUtils.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getCurrentDate } from './drawUtils.js';
 
 import { getTonPrice, getTonPriceChange24h, getTonPayout } from '../../API/getTONData.js';
 import { getSimpleCoinPrice, fetchSimpleCoinHolders, getSimpleCoinPriceChange24h, getBurnedPercentSimpleCoin } from '../../API/getSCData.js';
-
-const tonPrice = await getTonPrice();
-const { price: scPrice, fdv_usd: scFdvUsd } = await getSimpleCoinPrice();
-
-const tonPercent = await getTonPriceChange24h();
-const scPercent = await getSimpleCoinPriceChange24h();
-
-const scBurned = await getBurnedPercentSimpleCoin();
-const { totalAmount } = await getTonPayout();
-
-const { holders } = await fetchSimpleCoinHolders();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const tonImage = path.join(__dirname, '../images/ton.png');
@@ -42,21 +31,34 @@ export const IMAGE_WIDTH = 70;
 export const IMAGE_HEIGHT = 70;
 export const IMAGE_MARGIN = 15;
 
-export const buttons = [
-    { 
-        value: '$' + scPrice.toFixed(6), 
-        extra: (scPercent >= 0 ? '+' : '') + scPercent + '%', 
-        image: scImage, 
-        isPrice: true 
-    },
-    { 
-        value: '$' + tonPrice, 
-        extra: (tonPercent >= 0 ? '+' : '') + tonPercent + '%', 
-        image: tonImage, 
-        isPrice: true 
-    },
-    { title: '$SC Burned', value: scBurned, image: burnImage },
-    { title: 'Market Cap', value: '$' + scFdvUsd.toFixed(2), image: rewardImage },
-    { title: 'Holders', value: holders, image: holderImage },
-    { title: 'Date', value: getCurrentDate(), image: dateImage },
-];
+export async function getDynamicData() {
+    const tonPrice = await getTonPrice();
+    const { price: scPrice, fdv_usd: scFdvUsd } = await getSimpleCoinPrice();
+
+    const tonPercent = await getTonPriceChange24h();
+    const scPercent = await getSimpleCoinPriceChange24h();
+
+    const scBurned = await getBurnedPercentSimpleCoin();
+    const { totalAmount } = await getTonPayout();
+
+    const { holders } = await fetchSimpleCoinHolders();
+
+    return [
+        { 
+            value: '$' + scPrice.toFixed(6), 
+            extra: (scPercent >= 0 ? '+' : '') + scPercent + '%', 
+            image: scImage, 
+            isPrice: true 
+        },
+        { 
+            value: '$' + tonPrice, 
+            extra: (tonPercent >= 0 ? '+' : '') + tonPercent + '%', 
+            image: tonImage, 
+            isPrice: true 
+        },
+        { title: '$SC Burned', value: scBurned, image: burnImage },
+        { title: 'TON Payout', value: totalAmount, image: rewardImage },
+        { title: 'Holders', value: holders, image: holderImage },
+        { title: 'Date', value: getCurrentDate(), image: dateImage },
+    ];
+}
