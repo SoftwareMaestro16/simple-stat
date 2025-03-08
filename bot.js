@@ -39,6 +39,7 @@ bot.onText(/\/start/, async (msg) => {
 
         if (fs.existsSync(imagePath)) {
             await bot.sendPhoto(chatId, fs.createReadStream(imagePath), {
+                
                 ...keyboard
             });
             console.log(`✅ Изображение отправлено пользователю ${chatId}`);

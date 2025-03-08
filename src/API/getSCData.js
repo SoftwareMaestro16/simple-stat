@@ -56,18 +56,22 @@ export async function getSimpleCoinPriceChange24h() {
 export async function getBurnedPercentSimpleCoin() {
     const API_URL_SUPPLY = `https://tonapi.io/v2/jettons/${SIMPLE_COIN_ADDRESS}`;
     const API_URL_BURNED = `https://tonapi.io/v2/accounts/0%3A0000000000000000000000000000000000000000000000000000000000000000/jettons/${SIMPLE_COIN_ADDRESS}?currencies=ton,usd,rub&supported_extensions=custom_payload`;
-    
+
+    const INITIAL_SUPPLY = 100_000_000; 
+
     try {
         const responseSupply = await axios.get(API_URL_SUPPLY);
         const responseBurned = await axios.get(API_URL_BURNED);
 
-        const totalSupply = responseSupply.data.total_supply / 10**9;
-        const burned = responseBurned.data.balance / 10**9;
-        const burnedPercentage = (burned / totalSupply) * 100;
+        const currentSupply = responseSupply.data.total_supply / 10**9;
+        const burnedOnAddress = responseBurned.data.balance / 10**9;
+
+        const burnedTotal = (INITIAL_SUPPLY - currentSupply) + burnedOnAddress;
+        const burnedPercentage = (burnedTotal / INITIAL_SUPPLY) * 100;
 
         return burnedPercentage.toFixed(2) + '%';
     } catch (error) {
-        console.error("Error fetching 24h price change:", error);
+        console.error("Error fetching burned tokens:", error);
         return null;
     }
 }
